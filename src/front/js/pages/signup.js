@@ -26,7 +26,7 @@ export const Signup = () => {
 	}
 
 	const signup = async (name, email, password, city, country) => {
-		const resp = await fetch("https://3001-maroon-coral-v2yq5mcw.ws-eu16.gitpod.io/api/signup", {
+		const resp = await fetch("https://3001-harlequin-squirrel-ayofvhl9.ws-eu16.gitpod.io/api/signup", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"

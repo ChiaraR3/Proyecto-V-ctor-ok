@@ -14,20 +14,21 @@ def signup():
     password = request.json.get("password", None)
     city = request.json.get("city", None)
     country = request.json.get("country", None)
-    if name is None or email is None or password is None: 
+    if name is None or email is None or password is None:
         return jsonify({"msg": "Bad email or password"}), 401
-    user = User(name=name, email=email, password=password)
-    db.session.add(user)
-
+    user = User(name=name, email=email, password=password, city=city, country=country)
+    
     city = City.query.filter_by(name=city).first()
     print(city)
-    #if (not city):
-    db.session.add(city)
+    if (not city):
+     db.session.add(city)
     
     country = Country.query.filter_by(name=country).first()
     print(country)
-   # if (not country):
-    db.session.add(country)
+    if (not country):
+      db.session.add(country)
+
+    db.session.add(user)  
     db.session.commit()
     #return jsonify([]), 200
     # create a new token with the user id inside
