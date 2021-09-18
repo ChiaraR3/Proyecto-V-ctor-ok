@@ -6,25 +6,34 @@ from api.models import db, User, City
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
 api = Blueprint('api', __name__)
+
 @api.route("/signup", methods=["POST"])
 def signup():
     name = request.json.get("name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     city = request.json.get("city", None)
+    country = request.json.get("country", None)
     if name is None or email is None or password is None: 
         return jsonify({"msg": "Bad email or password"}), 401
     user = User(name=name, email=email, password=password)
     db.session.add(user)
+
     city = City.query.filter_by(name=city).first()
     print(city)
-    if (not city):
-        db.session.add(city)
-        db.session.commit()
+    #if (not city):
+    db.session.add(city)
+    
+    country = Country.query.filter_by(name=country).first()
+    print(country)
+   # if (not country):
+    db.session.add(country)
+    db.session.commit()
     #return jsonify([]), 200
     # create a new token with the user id inside
     access_token = create_access_token(identity=user.id)
     return jsonify({ "token": access_token, "user_id": user.id })
+
 @api.route("/login", methods=["POST"])
 def login():
     email = request.json.get("email", None)
@@ -37,6 +46,7 @@ def login():
     # create a new token with the user id inside
     access_token = create_access_token(identity=user.id)
     return jsonify({ "token": access_token, "user_id": user.id })
+
 @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():

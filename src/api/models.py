@@ -18,9 +18,9 @@ class User(db.Model):
 class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=False, nullable=False)
-    city = db.relationship('City', backref='country', lazy=True)
+    cities = db.relationship('City', backref='country', lazy=True)
     def __repr__(self):
-        return '<Countries %r>' % self.name
+        return '<Country %r>' % self.name
     def serialize(self):
         return {
             "id": self.id,
@@ -33,7 +33,7 @@ class City(db.Model):
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'),
         nullable=False)
     def __repr__(self):
-        return '<Cities %r>' % self.name
+        return '<City %r>' % self.name
     def serialize(self):
         return {
             "id": self.id,
