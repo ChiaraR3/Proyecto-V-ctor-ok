@@ -16,9 +16,35 @@ def list_countries():
 def create_country():
     json = request.get_json()    
 
-    if json is None:
+    if json is None or json == "":
         return jsonify("No JSON")
-    
+    return json
+
     name = json.get("name")
     country = Country(name=name)
+    db.session.add(country)
+    db.session.commit()
     return jsonify(country.serialize()),200
+
+@api.route("/countries/<int:country_id>/cities", methods=["GET"])
+def list_cities_for_each_country(country_id):
+    country = Country.query.get(country_id)
+    return jsonify(list(map(lambda city : city.serialize(), country.cities))),200
+
+@api.route("/countries/<int:country_id>/cities/create", methods=["POST"])
+def create_city_in_country(country_id):
+    json = request.get_json()    
+
+    if json is None or json == "":
+        return jsonify("No JSON")
+    return json
+
+    name = json.get("name")
+    country = Country.query.get(country_id)
+    city = City(name=name)
+
+    country.cities.append(city)
+    db.session.add(city)
+    db.session.commit()
+
+    return jsonify(city.serialize()),200

@@ -6,6 +6,26 @@ import "../../styles/home.scss";
 export const Home = () => {
 	const { store, actions } = useContext(Context);
 
+	fetch("https://3001-harlequin-squirrel-ayofvhl9.ws-eu16.gitpod.io/api/countries/create", {
+		method: "POST",
+		body: JSON.stringify({
+			name: "Portugal"
+		}),
+		headers: {
+			"Content-Type": "application/json"
+		}
+	}).then(response => console.log(response));
+
+	fetch("https://3001-harlequin-squirrel-ayofvhl9.ws-eu16.gitpod.io/api/countries/4/cities/create", {
+		method: "POST",
+		body: JSON.stringify({
+			name: "Lisboa"
+		}),
+		headers: {
+			"Content-Type": "application/json"
+		}
+	}).then(response => console.log(response));
+
 	return (
 		<div className="text-center mt-5">
 			<h1>Hello Rigo!</h1>

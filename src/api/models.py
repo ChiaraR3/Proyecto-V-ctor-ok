@@ -30,6 +30,7 @@ class City(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "country_id": self.country_id,
         }
 
 class Country(db.Model):
