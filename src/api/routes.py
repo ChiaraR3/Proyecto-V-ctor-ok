@@ -26,6 +26,11 @@ def create_country():
     db.session.commit()
     return jsonify(country.serialize()),200
 
+@api.route("/countries/<int:country_id>", methods=["GET"])
+def show_country(country_id):
+   country = Country.query.get(country_id)
+   return jsonify(country.serialize()),200
+
 @api.route("/countries/<int:country_id>/cities", methods=["GET"])
 def list_cities_for_each_country(country_id):
     country = Country.query.get(country_id)
@@ -43,8 +48,43 @@ def create_city_in_country(country_id):
     country = Country.query.get(country_id)
     city = City(name=name)
 
+
     country.cities.append(city)
+    city.country=country
+
     db.session.add(city)
     db.session.commit()
 
     return jsonify(city.serialize()),200
+
+@api.route("/users/create", methods=["POST"])
+def create_user():
+    name = json.get("name")
+    email = json.get("email")
+    password = json.get("password")
+    city_id = json.get("city_id")
+
+    user = User(email=email, password=password)
+    if city is not None:
+        user.city_id=city_id
+      
+    db.session.add(user)
+    db.session.commit()
+     
+    return jsonify(user.serialize()),200
+
+@api.route("/login", methods=["POST"])
+def login():
+
+    return jsonify({user: user.serialize(), access_token: "saaldasdasdasdskdjfhg"})
+
+@api.route("/users/<int:user_id>", methods=["GET"])
+def show_user(user_id):
+   user = User.query.get(user_id)
+   userSerialized= user.serialize()
+
+   if city is not None:
+       userSerialized["city"]=user.city.serialize()
+       userSerialized["city"]["country"]= user.city.country.serialize() 
+
+   return jsonify(userSerialized), 200

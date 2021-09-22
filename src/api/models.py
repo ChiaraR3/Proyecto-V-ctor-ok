@@ -13,7 +13,9 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "name": self.name,
             "email": self.email,
+            "city_id": self.city_id,
         }
 
 
